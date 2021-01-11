@@ -38,7 +38,7 @@ class Comment
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=episode::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Episode::class, inversedBy="comments")
      */
     private $episodes;
 

@@ -1,0 +1,3 @@
+mettre en place l'upload d'image
+mettre en place les fixtures
+mettre en place l'administration

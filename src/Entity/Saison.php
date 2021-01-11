@@ -23,7 +23,7 @@ class Saison
     private $number;
 
     /**
-     * @ORM\ManyToOne(targetEntity=serie::class, inversedBy="saisons")
+     * @ORM\ManyToOne(targetEntity=Serie::class, inversedBy="saisons")
      */
     private $series;
 
