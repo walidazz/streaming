@@ -4,13 +4,17 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SerieRepository;
+use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 
 /**
  * @ORM\Entity(repositoryClass=SerieRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  * @Vich\Uploadable
  */
 class Serie
@@ -314,5 +318,23 @@ class Serie
     public function getImageFile(): ?File
     {
         return $this->imageFile;
+    }
+
+
+    /**
+     * Permet d'initialiser la date de création !
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function initializeDate()
+    {
+        if (empty($this->createdAt)) {
+            $this->createdAt = new \DateTime('now');
+        } else {
+            $this->updatedAt = new \DateTime('now');
+        }
     }
 }
