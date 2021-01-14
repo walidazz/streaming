@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -36,8 +37,12 @@ class SerieCrudController extends AbstractCrudController
             DateTimeField::new('releaseDate'),
             IntegerField::new('rating'),
             IntegerField::new('duration'),
-            TextareaField::new('imageFile')->setFormType(VichImageType::class)->onlyOnForms(),            DateTimeField::new('createdAt', 'Inscrit depuis le')->onlyOnIndex(),
-            DateTimeField::new('updatedAt', 'Modifié le')->onlyOnIndex()
+            TextareaField::new('imageFile')->setFormType(VichImageType::class)->onlyOnForms(),
+            DateTimeField::new('createdAt', 'Inscrit depuis le')->onlyOnIndex(),
+            DateTimeField::new('updatedAt', 'Modifié le')->onlyOnIndex(),
+          //  CollectionField::new('saisons', 'Saison')->allowAdd()->allowDelete()->onlyOnForms()
+           // ArrayField::new('saisons.episodes', 'Episodes')->onlyOnForms(),
+
         ];
     }
 }

@@ -44,6 +44,11 @@ class Episode
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Saison::class, inversedBy="episodes")
+     */
+    private $saison;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -128,6 +133,18 @@ class Episode
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getSaison(): ?Saison
+    {
+        return $this->saison;
+    }
+
+    public function setSaison(?Saison $saison): self
+    {
+        $this->saison = $saison;
 
         return $this;
     }
