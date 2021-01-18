@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\EpisodeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Mapping\PrePersist;
+use App\Repository\EpisodeRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=EpisodeRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Episode
 {
@@ -147,5 +152,36 @@ class Episode
         $this->saison = $saison;
 
         return $this;
+    }
+
+    /**
+     * Permet d'initialiser la date de création !
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function initializeDate()
+    {
+        if (empty($this->createdAt)) {
+            $this->createdAt = new \DateTime('now');
+        }
+    }
+
+    /**
+     * Permet d'initialiser le slug !
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     *
+     * @return void
+     */
+    public function initializeSlug()
+    {
+        if (empty($this->slug)) {
+            $slugify    = new Slugify();
+            $this->slug = $slugify->slugify("{$this->getSaison()->getSeries()}-S{$this->getSaison()->getNumber()}E{$this->getNumber()}");
+        }
     }
 }

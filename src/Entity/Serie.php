@@ -337,4 +337,9 @@ class Serie
             $this->updatedAt = new \DateTime('now');
         }
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

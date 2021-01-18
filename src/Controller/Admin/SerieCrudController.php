@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class SerieCrudController extends AbstractCrudController
 {
@@ -40,8 +41,8 @@ class SerieCrudController extends AbstractCrudController
             TextareaField::new('imageFile')->setFormType(VichImageType::class)->onlyOnForms(),
             DateTimeField::new('createdAt', 'Inscrit depuis le')->onlyOnIndex(),
             DateTimeField::new('updatedAt', 'Modifié le')->onlyOnIndex(),
-          //  CollectionField::new('saisons', 'Saison')->allowAdd()->allowDelete()->onlyOnForms()
-           // ArrayField::new('saisons.episodes', 'Episodes')->onlyOnForms(),
+            AssociationField::new('saisons', 'Saison')->onlyOnIndex()
+
 
         ];
     }

@@ -30,7 +30,7 @@ class Saison
     private $series;
 
     /**
-     * @ORM\OneToMany(targetEntity=Episode::class, mappedBy="saison")
+     * @ORM\OneToMany(targetEntity=Episode::class, mappedBy="saison", cascade={"persist"})
      */
     private $episodes;
 

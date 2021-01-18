@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Genre;
 use App\Entity\Serie;
 use App\Controller\Admin\SerieCrudController;
+use App\Entity\Saison;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -45,5 +46,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Séries', 'fas fa-list', Serie::class);
         yield MenuItem::linkToCrud('Genres', 'fas fa-list', Genre::class);
+        yield MenuItem::linkToCrud('Saisons', 'fas fa-list', Saison::class);
     }
 }
