@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SerieController extends AbstractController
+class ApiController extends AbstractController
 {
     /**
-     * @Route("/serie", name="serie")
+     * @Route("/api", name="api")
      */
     public function index(): Response
     {
-        return $this->render('serie/index.html.twig', [
-            'controller_name' => 'SerieController',
+        return $this->render('api/index.html.twig', [
+            'controller_name' => 'ApiController',
         ]);
     }
 }

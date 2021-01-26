@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Service\ApiCheck;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\Mapping\PreUpdate;
@@ -9,7 +10,9 @@ use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpClient\HttpClient;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 
 /**
@@ -94,7 +97,7 @@ class Serie
     private $genres;
 
     /**
-     * @ORM\OneToMany(targetEntity=Saison::class, mappedBy="series")
+     * @ORM\OneToMany(targetEntity=Saison::class, mappedBy="series", cascade={"remove"})
      */
     private $saisons;
 
@@ -103,10 +106,13 @@ class Serie
      */
     private $slug;
 
+    private $client;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
         $this->saisons = new ArrayCollection();
+        $this->client = HttpClient::create();
     }
 
     public function getId(): ?int
@@ -222,12 +228,12 @@ class Serie
         return $this;
     }
 
-    public function getCoverImage(): ?string
+    public function getCoverImage()
     {
         return $this->coverImage;
     }
 
-    public function setCoverImage(string $coverImage): self
+    public function setCoverImage($coverImage): self
     {
         $this->coverImage = $coverImage;
 
@@ -341,5 +347,40 @@ class Serie
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function CheckID()
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://imdb-api.com/fr/API/Search/k_3ecolzxf/ ' . $this->name
+        );
+        return  $response->toArray()['results'][0]['id'];
+    }
+
+    public function CheckSerieInfo($id)
+    {
+        $checkSerie =   $this->client->request(
+            'GET',
+            'https://imdb-api.com/fr/API/Title/k_3ecolzxf/' . $id . '/FullActor,FullCast,Posters,Images,Ratings,'
+        );
+        return  $checkSerie->toArray();
+    }
+
+    /**
+     * Permet d'initialiser la date de création !
+     *
+     * @ORM\PrePersist
+     *
+     * @return void
+     */
+    public function setEmptyInfos()
+    {
+        $id = $this->CheckID();
+        $info = $this->CheckSerieInfo($id);
+
+        if (empty($this->rating)) {
+            $this->rating = $info['imDbRating'];
+        }
     }
 }

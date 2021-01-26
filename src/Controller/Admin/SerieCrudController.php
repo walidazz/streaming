@@ -36,7 +36,7 @@ class SerieCrudController extends AbstractCrudController
             SlugField::new('slug')->setTargetFieldName('name'),
             TextEditorField::new('synopsis'),
             DateTimeField::new('releaseDate'),
-            IntegerField::new('rating'),
+            IntegerField::new('rating')->setFormTypeOptions(['required' => false]),
             IntegerField::new('duration'),
             TextareaField::new('imageFile')->setFormType(VichImageType::class)->onlyOnForms(),
             DateTimeField::new('createdAt', 'Inscrit depuis le')->onlyOnIndex(),
