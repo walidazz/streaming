@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Service\ApiCheck;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SerieRepository;
 use Doctrine\ORM\Mapping\PreUpdate;
@@ -349,38 +348,6 @@ class Serie
         return $this->name;
     }
 
-    public function CheckID()
-    {
-        $response = $this->client->request(
-            'GET',
-            'https://imdb-api.com/fr/API/Search/k_3ecolzxf/ ' . $this->name
-        );
-        return  $response->toArray()['results'][0]['id'];
-    }
 
-    public function CheckSerieInfo($id)
-    {
-        $checkSerie =   $this->client->request(
-            'GET',
-            'https://imdb-api.com/fr/API/Title/k_3ecolzxf/' . $id . '/FullActor,FullCast,Posters,Images,Ratings,'
-        );
-        return  $checkSerie->toArray();
-    }
 
-    /**
-     * Permet d'initialiser la date de création !
-     *
-     * @ORM\PrePersist
-     *
-     * @return void
-     */
-    public function setEmptyInfos()
-    {
-        $id = $this->CheckID();
-        $info = $this->CheckSerieInfo($id);
-
-        if (empty($this->rating)) {
-            $this->rating = $info['imDbRating'];
-        }
-    }
 }
