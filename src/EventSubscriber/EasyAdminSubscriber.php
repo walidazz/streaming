@@ -34,9 +34,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     public function CheckID($entity)
     {
-
-
-
         $response = $this->client->request(
             'GET',
             'https://imdb-api.com/fr/API/Search/k_3ecolzxf/ ' . $entity->getName()
@@ -63,7 +60,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
 
 
-
         $id = $this->CheckID($entity);
         $info = $this->CheckSerieInfo($id);
 
@@ -75,11 +71,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             $entity->setDirector($info['directors']);
         }
 
-  
-
         if (empty($entity->getDuration())) {
             $entity->setDuration($info['runtimeMins']);
         }
     }
 }
-//             move_uploaded_file($tmpName, $project_dir . DIRECTORY_SEPARATOR . 'public' .   DIRECTORY_SEPARATOR . 'uploads'  . DIRECTORY_SEPARATOR . $filename . '.' . $extension);
